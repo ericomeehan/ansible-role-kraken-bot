@@ -1,7 +1,7 @@
 ---
 # defaults file for ansible-role-pykraken
-pykraken_namespace: pykraken
+pykraken_namespace: "pykraken"
 pykraken_schedule: "0 * * * *"
-pykraken_r_value_target: .33
-pykraken_investment_count: 3
-pykraken_investment_volume: 100
+pykraken_r_value_target: ".33"
+pykraken_investment_count: "3"
+pykraken_investment_volume: "100"
