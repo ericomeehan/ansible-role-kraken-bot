@@ -1,31 +1,43 @@
 ---
-# tasks file for ansible-role-kraken-bot
-- name: Create kraken bot namespace
+# tasks file for ansible-role-pykraken
+- name: Create pykraken namespace
   k8s:
     state: present
     definition:
       apiVersion: v1
       kind: Namespace
       metadata:
-        name: "{{ kraken_bot_namespace }}"
+        name: "{{ pykraken_namespace }}"
 
-- name: Create a cron job for kraken bot
+- name: Create a cron job for pykraken
   k8s:
     state: present
     definition:
       apiVersion: batch/v1
       kind: CronJob
       metadata:
-        name: kraken-bot
+        name: cron
+      namespace: "{{ pykraken_namespace }}"
       spec:
-        schedule: "{{ schedule }}"
+        schedule: "{{ pykraken_schedule }}"
         jobTemplate:
           spec:
             template:
               spec:
                 containers:
-                  - name: bot
+                  - name: pykraken
                     image: debian
+                    env:
+                      - name: KRAKEN_API_TOKEN
+                        value: "{{ kraken_api_token }}"
+                      - name: KRAKEN_API_SEC
+                        value: "{{ kraken_api_sec }}"
+                      - name: R_VALUE_TARGET
+                        value: "{{ pykraken_r_value_target }}"
+                      - name: INVESTMENT_COUNT
+                        value: "{{ pykraken_investment_count }}"
+                      - name: INVESTMENT_VOLUME
+                        value: "{{ pykraken_investment_volume }}"
                     command:
                       - apt-get install -y git
                       - git clone https://git.eom.dev/pykraken /usr/local/src/pykraken

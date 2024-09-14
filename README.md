@@ -1,18 +1,24 @@
-Kraken Bot
+Pykraken
 =========
 
-Scheduled algorithmic cryptocurrency tradting using the Kraken API
+Deploys a Kubernetes CronJob for scheduled execution of pykraken.
 
 Requirements
 ------------
 
-None.
+An API token and secret from Kraken.
 
 Role Variables
 --------------
 
-kraken_bot_namespace: kraken-bot
-schedule: "0 * * * * "
+kraken_api_token: "..."
+kraken_api_sec: "..."
+
+pykraken_namespace: pykraken
+pykraken_schedule: "0 * * * * "
+pykraken_r_value_target: .33
+pykraken_investment_count: 3
+pykraken_investment_volume: 100
 
 Dependencies
 ------------
