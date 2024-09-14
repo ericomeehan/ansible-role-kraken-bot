@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-kraken-bot
+- name: Create kraken bot namespace
+  k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: "{{ kraken_bot_namespace }}"
+
+- name: Create a cron job for kraken bot
+  k8s:
+    state: present
+    definition:
+      apiVersion: batch/v1
+      kind: CronJob
+      metadata:
+        name: kraken-bot
+      spec:
+        schedule: "{{ schedule }}"
+        jobTemplate:
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: bot
+                    image: debian
+                    command:
+                      - apt-get install -y git
+                      - git clone https://git.eom.dev/pykraken /usr/local/src/pykraken
+                      - cd /usr/local/src/pykraken
+                      - python3 -m venv venv
+                      - source venv/bin/activate
+                      - pip3 install -r requirements.txt
+                      - python3 app.py
+                    restartPolicy: OnFailure

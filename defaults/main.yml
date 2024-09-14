@@ -1,0 +1,5 @@
+---
+# defaults file for ansible-role-kraken-bot
+kraken_bot_namespace: kraken-bot
+schedule: "0 * * * *"
+
