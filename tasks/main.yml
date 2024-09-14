@@ -40,4 +40,4 @@
                         value: "{{ kraken_bot_investment_volume }}"
                     command:
                       - python3 /usr/local/src/kraken-bot/app.py
-                  restartPolicy: OnFailure
+                restartPolicy: OnFailure
