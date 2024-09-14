@@ -1,15 +1,15 @@
 ---
-# tasks file for ansible-role-pykraken
-- name: Create pykraken namespace
+# tasks file for ansible-role-kraken-bot
+- name: Create kraken-bot namespace
   k8s:
     state: present
     definition:
       apiVersion: v1
       kind: Namespace
       metadata:
-        name: "{{ pykraken_namespace }}"
+        name: "{{ kraken_bot_namespace }}"
 
-- name: Create a cron job for pykraken
+- name: Create a cron job for kraken-bot
   k8s:
     state: present
     definition:
@@ -17,33 +17,27 @@
       kind: CronJob
       metadata:
         name: cron
-        namespace: "{{ pykraken_namespace }}"
+        namespace: "{{ kraken_bot_namespace }}"
       spec:
-        schedule: "{{ pykraken_schedule }}"
+        schedule: "{{ kraken_bot_schedule }}"
         jobTemplate:
           spec:
             template:
               spec:
                 containers:
-                  - name: pykraken
-                    image: debian
+                  - name: bot
+                    image: ericomeehan/kraken-bot
                     env:
                       - name: KRAKEN_API_TOKEN
                         value: "{{ kraken_api_token }}"
                       - name: KRAKEN_API_SEC
                         value: "{{ kraken_api_sec }}"
                       - name: R_VALUE_TARGET
-                        value: "{{ pykraken_r_value_target }}"
+                        value: "{{ kraken_bot_r_value_target }}"
                       - name: INVESTMENT_COUNT
-                        value: "{{ pykraken_investment_count }}"
+                        value: "{{ kraken_bot_investment_count }}"
                       - name: INVESTMENT_VOLUME
-                        value: "{{ pykraken_investment_volume }}"
+                        value: "{{ kraken_bot_investment_volume }}"
                     command:
-                      - apt-get install -y git
-                      - git clone https://git.eom.dev/pykraken /usr/local/src/pykraken
-                      - cd /usr/local/src/pykraken
-                      - python3 -m venv venv
-                      - source venv/bin/activate
-                      - pip3 install -r requirements.txt
-                      - python3 app.py
+                      - python3 /usr/local/src/kraken-bot/app.py
                     restartPolicy: OnFailure
