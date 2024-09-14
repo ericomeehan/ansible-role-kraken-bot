@@ -17,7 +17,7 @@
       kind: CronJob
       metadata:
         name: cron
-      namespace: "{{ pykraken_namespace }}"
+        namespace: "{{ pykraken_namespace }}"
       spec:
         schedule: "{{ pykraken_schedule }}"
         jobTemplate:
