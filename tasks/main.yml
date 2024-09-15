@@ -39,8 +39,6 @@
                       - name: INVESTMENT_VOLUME
                         value: "{{ kraken_bot_investment_volume }}"
                     command:
-                      - /bin/bash
-                      - -c
-                      - python3
+                      - /usr/bin/python3
                       - /usr/local/src/kraken-bot/app.py
                 restartPolicy: OnFailure
